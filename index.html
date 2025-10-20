@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curriculum — Erika Pacule</title>
+
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="curriculum.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- html2pdf para exportar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* Botões da página inicial */
+    .home-buttons { display:flex; gap:12px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+    .home-cta { background: linear-gradient(135deg, #4a90e2, #7b61ff); border:0; color:white; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:600; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); transition: transform .12s ease, box-shadow .12s ease, opacity .12s; text-decoration:none;}
+    .home-cta:hover { transform: translateY(-3px); box-shadow:0 8px 18px rgba(0,0,0,0.12); opacity:0.98; }
+    .home-cta:active { transform: translateY(-1px); }
+    .home-cta i { font-size:14px; }
+
+    @media (max-width:520px){
+      .home-buttons { gap:8px; padding:0 12px; }
+      .home-cta { padding:10px 12px; font-size:14px; }
+    }
+
+    /* Tabs */
+    .tabs { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:12px; }
+    .tab-btn { padding:8px 12px; border-radius:8px; border:0; background:#eee; cursor:pointer; }
+    .tab-btn.active { background:#2d8cf0; color:#fff; }
+    .tab-content { margin-top:12px; display:none; }
+    .tab-content.active { display:block; }
+
+    .film-card { margin-bottom:12px; }
+    .gallery img { max-width:100%; height:auto; display:block; border-radius:6px; }
+
+    /* Formulário de avaliação */
+    .rating-panel { max-width:820px; margin:14px auto; padding:12px; border-radius:10px; background:rgba(0,0,0,0.03); }
+    .rating-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .rating-row select, .rating-row input[type="number"] { padding:8px; }
+    .rating-row button { padding:8px 10px; border-radius:8px; cursor:pointer; }
+
+    #ratingsChart, #trendChart { max-width:820px; width:100%; height:320px; margin:8px auto; display:block; }
+
+    /* Back to top */
+    #back-to-top { display:none; position:fixed; right:12px; bottom:12px; padding:8px 10px; border-radius:6px; }
+    #download-pdf { position:fixed; right:12px; bottom:60px; padding:8px 10px; border-radius:6px; }
+
+    /* Seção de filmes */
+#tab-filmes {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+#tab-filmes h4 {
+  font-size: 1.6em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Galeria de filmes */
+.films {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Cada filme */
+.film-item {
+  flex: 1 1 45%; /* ocupa metade da linha em telas grandes */
+  max-width: 460px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.film-item:hover {
+  transform: scale(1.02);
+}
+
+/* Vídeos e iframes */
+.film-item video,
+.film-item iframe {
+  width: 100%;
+  height: 240px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* Descrição */
+.film-item .info {
+  text-align: left;
+  padding: 0 8px;
+}
+
+.film-item .info strong {
+  display: block;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  color: #222;
+}
+
+.film-item .info p {
+  font-size: 0.95em;
+  color: #555;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .film-item {
+    flex: 1 1 100%;
+  }
+  .film-item video,
+  .film-item iframe {
+    height: 200px;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+
+<div align="center">
+  <nav style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+    <a href="#inicio">Início</a> |
+    <a href="#sobremim">Sobre Mim</a> |
+    <a href="#projetos">Projetos</a> |
+    <a href="#formacao">Formação</a> |
+    <a href="#experiencia">Experiência</a> |
+    <a href="#galeria">Galeria</a> |
+    <a href="#contacto">Contacto</a>
+    <button id="theme-toggle" aria-label="Ativar modo escuro" title="Ativar modo escuro" style="margin-left:18px; background:transparent; border:0; cursor:pointer; font-size:18px;">
+      <i id="theme-icon" class="fas fa-moon"></i>
+    </button>
+  </nav>
+  <hr>
+</div>
+
+<section id="inicio" align="center">
+  <div class="perfil">
+    <img src="Imagem WhatsApp 2025-09-18 às 03.37.34_19fb5130.jpg" alt="foto de perfil" style="max-width:140px;border-radius:50%;">
+  </div>
+  <h2>Erika Fernando Pacule</h2>
+  <p><em>Estudante de Programação Web | Apaixonada por Tecnologia</em></p>
+
+  <div class="home-buttons" role="navigation" aria-label="Atalhos principais">
+    <a class="home-cta" href="#sobremim" title="Ver o meu currículo"><i class="fas fa-user"></i> Ver Currículo</a>
+    <a class="home-cta" href="#galeria" title="Abrir a minha galeria e formulário"><i class="fas fa-image"></i> Ver Galeria</a>
+    <a class="home-cta" href="#contacto" title="Ir para a secção de contacto"><i class="fas fa-envelope"></i> Contactos</a>
+  </div>
+</section>
+
+<section id="sobremim">
+  <h3>Sobre Mim</h3>
+  <p>Tenho 19 anos e sou uma estudante dedicada, apaixonada pelo mundo da tecnologia e programação. Desde cedo sempre gostei de aprender como funcionam os computadores e as redes, e essa curiosidade me levou a investir nos cursos de <strong>Suporte Informático</strong> e <strong>Programação Web</strong>.</p>
+  <p>Atualmente estudo programação com foco em desenvolvimento web. Tenho trabalhado com <strong>HTML</strong>, <strong>CSS</strong>, <strong>Java</strong> e <strong>Python</strong>. Meu objetivo é crescer profissionalmente como desenvolvedora e contribuir para soluções inovadoras no mundo digital.</p>
+</section>
+
+<section id="formacao">
+  <h3>Formação Acadêmica</h3>
+  <ul>
+    <li>7ª Classe - Escola Primária Completa de Tunduro</li>
+    <li>10ª Classe - Escola Secundária Nelson Mandela</li>
+    <li>CV3 - Electricidade Industrial - Instituto de Transportes e Comunicações (ITC)</li>
+    <li>CV4 - Suporte Informático - Instituto de Transportes e Comunicações (ITC)</li>
+    <li>CV5 - Programação Web (em curso) - Instituto de Transportes e Comunicações (ITC)</li>
+  </ul>
+</section>
+
+<section id="experiencia">
+  <h2>Experiência Profissional</h2>
+  <ul>
+    <li><strong>Assistente de TI</strong> - ZMC Soluções Tecnológicas
+      <p>Atividades: Suporte técnico, manutenção de sistemas e redes, atendimento a utilizadores.</p>
+    </li>
+    <li><strong>Helpdesk</strong> - IPAS
+      <p>Atividades: Apoio a utilizadores, resolução de incidentes de software e hardware, configuração de equipamentos e suporte remoto.</p>
+    </li>
+  </ul>
+</section>
+
+<section id="galeria">
+  <article id="hobbies" class="card" style="margin-top:12px">
+    <h3>Hobbies</h3>
+    <div class="tabs" role="tablist" aria-label="Abas de hobbies">
+      <button class="tab-btn active" data-tab="tab-galeria">Galeria</button>
+      <button class="tab-btn" data-tab="tab-musicas">Músicas</button>
+      <button class="tab-btn" data-tab="tab-filmes">Filmes</button>
+    </div>
+
+    <!-- Tab Galeria -->
+    <div id="tab-galeria" class="tab-content active" role="region">
+      <h4>Fotos</h4>
+      <div class="gallery" id="galleryList" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+        <div class="photo" data-title="Skyline" style="width:180px;">
+          <img src="nissan-skyline-paul-walker-2.webp" alt="Skyline" style="width:100%;height:120px;object-fit:cover">
+          <div class="meta">Skyline</div>
+        </div>
+        <div class="photo" data-title="BMW" style="width:180px;">
+          <img src="snapshot (2).jpg" alt="Supra" style="width:100%;height:120px;object-fit:cover">
+          <div class="meta">BMW</div>
+        </div>
+        <div class="photo" data-title="S13" style="width:180px;">
+          <img src="snapshot (4).jpg" alt="S13" style="width:100%;height:120px;object-fit:cover">
+          <div class="meta">S13</div>
+        </div>
+      </div>
+      <h4 style="margin-top:12px">Downloads rápidos</h4>
+      <ul>
+        <li><a href="nissan-skyline-paul-walker-2.webp" download>Baixar Skyline</a></li>
+        <li><a href="ep1vb.mp3" download>Baixar Música</a></li>
+      </ul>
+    </div>
+
+    <!-- Tab Músicas -->
+    <div id="tab-musicas" class="tab-content" role="region">
+      <h4>Músicas</h4>
+      <div id="tracks" style="display:flex;flex-direction:column;gap:8px;max-width:720px;margin:0 auto;">
+        <div class="track" data-title="Minha música">Valete<a href="Ficheiro de áudio WhatsApp 2025-10-16 às 00.57.25_9f75adcd.mp3" download>Download</a></div>
+      </div>
+      <div style="margin-top:10px;text-align:center;">
+        <input id="newTrackName" placeholder="Nome da faixa" style="padding:8px;margin-right:6px">
+        <input id="newTrackFile" placeholder="URL/ficheiro da música" style="padding:8px">
+        <button id="addTrackBtn" style="padding:6px 10px;margin-top:6px;">Adicionar Música</button>
+      </div>
+    </div>
+
+    <!-- Tab Filmes -->
+    <div id="tab-filmes" class="tab-content" role="region">
+  <h4>Filmes</h4>
+
+  <div class="films">
+    <!-- Filme 1 -->
+    <div class="film-item">
+      <video controls poster="">
+        <source src="2 Fast 2 Furious-720P.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos HTML5.
+      </video>
+
+      <!-- Link do YouTube -->
+      <iframe width="100%" height="220" src="https://www.youtube.com/embed/KiuDDZGFrMs"
+        title="2 Fast 2 Furious" frameborder="0"
+        allowfullscreen></iframe>
+
+      <div class="info">
+        <strong>2 Fast 2 Furious</strong>
+        <p>Onde conhecemos o famoso, com amor apresentamos ....</p>
+      </div>
+    </div>
+
+    <!-- Filme 2 -->
+    <div class="film-item">
+      <video controls poster="">
+        <source src="ᴬᴰᴹ_ᶜᴬᴿᵀᴱᴿTransformers_O_Despertar_das_Feras.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos HTML5.
+      </video>
+
+      <!-- Link do YouTube -->
+      <iframe width="100%" height="220" src="https://www.youtube.com/embed/w0jtD2-BnAo"
+        title="Transformers O Despertar das Feras" frameborder="0"
+        allowfullscreen></iframe>
+
+      <div class="info">
+        <strong>Transformers: O Despertar das Feras</strong>
+        <p>O despertar das feras, com o único e icónico Optimus Prime.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Avaliação -->
+    <div class="rating-panel">
+      <h4>Avaliações</h4>
+      <canvas id="ratingsChart"></canvas>
+      <div style="margin-top:10px" class="rating-row">
+        <label for="categorySelect">Categoria</label>
+        <select id="categorySelect">
+          <option value="fotos">Fotos</option>
+          <option value="musicas">Músicas</option>
+          <option value="filmes">Filmes</option>
+        </select>
+
+        <label for="itemSelect">Item</label>
+        <select id="itemSelect"></select>
+
+        <label for="ratingValue">Nota</label>
+        <input type="number" id="ratingValue" min="1" max="5" value="5">
+
+        <button id="submitRating" type="button">Enviar Avaliação</button>
+      </div>
+
+      <!-- Favoritos -->
+      <div id="favoriteSection" style="margin-top:12px;">
+        <h5>Marcar como favorito</h5>
+        <div id="favoriteList" style="display:flex;flex-direction:column;gap:8px;max-width:720px;margin-top:6px"></div>
+        <canvas id="trendChart" style="margin-top:10px;max-width:820px;width:100%;height:260px"></canvas>
+      </div>
+    </div>
+
+  </article>
+</section>
+
+<section id="projetos">
+  <h3>Projetos</h3>
+  <ul>
+    <li><strong>Website Pessoal</strong> - Página em HTML para apresentar informações pessoais.</li>
+    <li><strong>Exercícios de Programação</strong> - Projetos de prática em Java e Python.</li>
+  </ul>
+</section>
+
+<section id="contacto">
+  <h2>Contacto</h2>
+  <p><strong>Email:</strong> <a href="mailto:erikapacule1@gmail.com">erikapacule1@gmail.com</a></p>
+  <p><strong>Telefone:</strong> <a href="tel:+258877365120">+258 877 365 120 / 847 406 473</a></p>
+
+  <div style="margin-top:12px;">
+    <button onclick="window.location.href='mailto:erikapacule1@gmail.com'">Contactar por Email</button>
+    <button onclick="window.location.href='tel:+258877365120'">Contactar</button>
+  </div>
+
+  <h3>Redes Sociais</h3>
+  <div class="redes-sociais" aria-label="Redes sociais de Erika">
+    <!-- WhatsApp -->
+    <a href="https://wa.me/258877365120" target="_blank" rel="noopener" aria-label="WhatsApp de Erika" title="Enviar mensagem por WhatsApp">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" width="40" height="40">
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/258877365120" target="_blank" rel="noopener" aria-label="Instagram de Erika" title="Ver Instagram">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" width="40" height="40">
+    </a>
+
+    <!-- LinkedIn -->
+    <a href="https://www.linkedin.com/in/ErikaPacule" target="_blank" rel="noopener" aria-label="LinkedIn de Erika" title="Ver LinkedIn">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" width="40" height="40">
+    </a>
+  </div>
+
+  <h4>Idiomas</h4>
+  <div>
+    <p class="Portugues">Português- Avançado</p>
+    <progress class="prog" value="80" max="100"></progress>
+
+    <p>Inglês- Intermediário</p>
+    <progress class="prog1" value="50" max="100"></progress>
+  </div>
+</section>
+
+<button id="back-to-top">↑</button>
+<button id="download-pdf">Salvar como PDF</button>
+
+<script>
+  // Dark mode toggle
+  (function(){
+    const toggle = document.getElementById('theme-toggle');
+    const icon  = document.getElementById('theme-icon');
+    const body  = document.body;
+    const stored = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if(stored==='dark'||(!stored&&prefersDark)){ body.classList.add('dark'); icon.classList.replace('fa-moon','fa-sun'); }
+    toggle.addEventListener('click',()=>{
+      const isDark = body.classList.toggle('dark');
+      icon.classList.toggle('fa-moon',!isDark); icon.classList.toggle('fa-sun',isDark);
+      localStorage.setItem('theme', isDark?'dark':'light');
+    });
+  })();
+
+  // Back to top
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll',()=>{ backToTop.style.display=(window.scrollY>200)?'block':'none'; });
+  backToTop.addEventListener('click',()=>{ window.scrollTo({ top:0, behavior:'smooth' }); });
+
+  // PDF download
+  document.getElementById('download-pdf').addEventListener('click',()=>{
+    html2pdf().from(document.body).set({ margin:0.5, filename:'Curriculo_Erika_Pacule.pdf', image:{type:'jpeg',quality:0.98}, html2canvas:{scale:2}, jsPDF:{unit:'in',format:'a4',orientation:'portrait'} }).save();
+  });
+
+  // Tabs
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  tabButtons.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      tabButtons.forEach(b=>b.classList.remove('active'));
+      tabContents.forEach(c=>c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Adicionar faixas
+  const addBtn=document.getElementById('addTrackBtn'), tracksContainer=document.getElementById('tracks');
+  addBtn?.addEventListener('click',()=>{
+    const name=document.getElementById('newTrackName').value.trim();
+    const file=document.getElementById('newTrackFile').value.trim();
+    if(!name||!file){ alert('Preencha nome e URL/ficheiro da faixa.'); return; }
+    const div=document.createElement('div'); div.className='track'; div.dataset.title=name;
+    div.textContent=name+' ';
+    const a=document.createElement('a'); a.href=file; a.target='_blank'; a.rel='noopener'; a.textContent='Download/Link'; div.appendChild(a);
+    if(/\.mp3$|\.wav$|\.ogg$/i.test(file)||/^https?:\/\//i.test(file)){
+      const audio=document.createElement('audio'); audio.controls=true; audio.src=file; audio.style.display='block'; audio.style.marginTop='6px'; div.appendChild(audio);
+    }
+    tracksContainer.appendChild(div);
+    document.getElementById('newTrackName').value=''; document.getElementById('newTrackFile').value='';
+    populateItemsList();
+  });
+
+  // Avaliações
+  const catSelect=document.getElementById('categorySelect'), itemSelect=document.getElementById('itemSelect'), ratingValue=document.getElementById('ratingValue'), submitRating=document.getElementById('submitRating'), chartCtx=document.getElementById('ratingsChart').getContext('2d'), trendCtx=document.getElementById('trendChart').getContext('2d');
+  let ratingsChart=null, trendChart=null;
+
+  function collectAllItems(){
+    const fotos=Array.from(document.querySelectorAll('.gallery .photo')).map(p=>({cat:'fotos',name:p.dataset.title||p.querySelector('.meta')?.textContent||'Foto'}));
+    const musicas=Array.from(document.querySelectorAll('#tracks .track')).map(t=>({cat:'musicas',name:t.dataset.title||t.textContent.trim().split('\n')[0]}));
+    const filmes=Array.from(document.querySelectorAll('.films .film-card')).map(f=>({cat:'filmes',name:f.dataset.title||f.querySelector('.info strong')?.textContent||'Filme'}));
+    return fotos.concat(musicas).concat(filmes);
+  }
+
+  function loadFavorites(){ return JSON.parse(localStorage.getItem('favorites_v1')||'{}'); }
+  function saveFavorites(obj){ localStorage.setItem('favorites_v1',JSON.stringify(obj)); }
+
+  function renderFavoriteList(){
+    const listEl=document.getElementById('favoriteList'); listEl.innerHTML='';
+    const items=collectAllItems();
+    if(items.length===0){ listEl.textContent='Nenhum item disponível.'; return; }
+    items.forEach(it=>{
+      const key=`${it.cat}::${it.name}`;
+      const row=document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.alignItems='center';
+      const label=document.createElement('div'); label.textContent=`${it.name} (${it.cat})`;
+      const btn=document.createElement('button'); btn.type='button'; btn.textContent='Favoritar'; btn.addEventListener('click',()=>{
+        const fav=loadFavorites(); if(!fav[key]) fav[key]=[]; fav[key].push(new Date().toISOString()); saveFavorites(fav); updateTrendChart(key);
+      });
+      row.appendChild(label); row.appendChild(btn); listEl.appendChild(row);
+    });
+  }
+
+  function populateItemsList(){
+    const cat=catSelect.value; const items=collectAllItems().filter(i=>i.cat===cat).map(i=>i.name);
+    itemSelect.innerHTML=''; if(items.length===0){ itemSelect.innerHTML='<option>— nenhum item —</option>'; return; }
+    items.forEach(it=>{ const opt=document.createElement('option'); opt.value=it; opt.textContent=it; itemSelect.appendChild(opt); });
+  }
+
+  function createOrUpdateChart(){
+    const ratings=JSON.parse(localStorage.getItem('ratings_v1')||'{}');
+    const categories=['fotos','musicas','filmes'];
+    const data=categories.map(cat=>{ const vals=Object.keys(ratings).filter(k=>k.startsWith(cat+'::')).map(k=>ratings[k]); return vals.length? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length*100)/100:0; });
+    if(ratingsChart){ ratingsChart.data.datasets[0].data=data; ratingsChart.update(); return; }
+    ratingsChart=new Chart(chartCtx,{type:'bar',data:{labels:['Fotos','Músicas','Filmes'],datasets:[{label:'Média de Avaliações',data:data}]},options:{scales:{y:{beginAtZero:true,max:5}}}});
+  }
+
+  function updateTrendChart(key){
+    const fav=loadFavorites(); const timestamps=(fav[key]||[]).slice().sort();
+    const labels=timestamps.map(t=>new Date(t).toLocaleString()); const data=timestamps.map((_,i)=>i+1);
+    if(trendChart){ trendChart.data.labels=labels; trendChart.data.datasets[0].data=data; trendChart.update(); return; }
+    trendChart=new Chart(trendCtx,{type:'line',data:{labels:labels,datasets:[{label:'Votos cumulativos',data:data,fill:false,tension:0.3}]},options:{scales:{y:{beginAtZero:true}},plugins:{legend:{display:true}}}});
+  }
+
+  catSelect.addEventListener('change',()=>{ populateItemsList(); updateTrendChart(`${catSelect.value}::${itemSelect.value}`); });
+  itemSelect.addEventListener('change',()=>{ updateTrendChart(`${catSelect.value}::${itemSelect.value}`); });
+
+  submitRating.addEventListener('click',()=>{
+    const cat=catSelect.value; const item=itemSelect.value; const val=Number(ratingValue.value);
+    if(!cat||!item||!val||val<1||val>5){ alert('Preencha corretamente.'); return; }
+    const ratings=JSON.parse(localStorage.getItem('ratings_v1')||'{}');
+    const key=`${cat}::${item}`;
+    ratings[key]=ratings[key]?Math.round(((ratings[key]+val)/2)*100)/100:val;
+    localStorage.setItem('ratings_v1',JSON.stringify(ratings));
+    createOrUpdateChart();
+    alert('Avaliação registrada!');
+  });
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    renderFavoriteList();
+    populateItemsList();
+    createOrUpdateChart();
+    if(itemSelect.options.length>0) updateTrendChart(`${catSelect.value}::${itemSelect.value}`);
+  });
+</script>
+
+</body>
+</html>
